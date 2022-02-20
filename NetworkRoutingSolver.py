@@ -30,9 +30,9 @@ class ArrayQueue:
         self.nodes.remove(nodeToReturn)
         return nodeToReturn
 
-    def findV(self, node):
+    def findV(self, nodeID):
         for i in range(len(self.nodes)):
-            if self.nodes[i] == node:
+            if self.nodes[i].id == nodeID:
                 return i
         return None  # this is bad
 
@@ -88,20 +88,17 @@ class NetworkRoutingSolver:
             neighbors = self.network.nodes[u.id].neighbors
             print(f"Neighbors for {u.id}: {neighbors}")
             for v in neighbors:
-                combinedDistanceOfUandV = u.dist + v.length
-                if v.length > combinedDistanceOfUandV:
-                    # Update node that we're visiting
-                    v.length = combinedDistanceOfUandV
-                    v.prev = u
+                # Find where v lives in the priority queue
+                vIndex = priorityQueue.findV(v.dest.node_id)
+                if vIndex is not None:
+                    combinedDistanceOfUandV = u.dist + v.length
+                    if priorityQueue.nodes[vIndex].dist > combinedDistanceOfUandV:
+                        # Update the node that we're visiting
+                        priorityQueue.nodes[vIndex].dist = combinedDistanceOfUandV
+                        priorityQueue.nodes[vIndex].prev = u
 
-                    # Find where v lives in H
-                    indexV = priorityQueue.findV(v)
-
-                    # Replace that old node with the new updated V
-                    priorityQueue.nodes[indexV] = v
-
-                    # Move V to the front of H
-                    priorityQueue.nodes.insert(0, v)
+                        # Move the node we are visiting to the front of the priority queue
+                        priorityQueue.nodes.insert(0, priorityQueue.nodes.pop(vIndex))
 
         t2 = time.time()
         return t2 - t1
