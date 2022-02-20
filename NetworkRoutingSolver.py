@@ -25,8 +25,16 @@ class ArrayQueue:
     def insert(self, node):
         self.nodes.append(node)
 
-    def deletemin(self):
-        return self.nodes.pop()
+    def deleteMin(self):
+        nodeToReturn = self.nodes[0]
+        self.nodes.remove(nodeToReturn)
+        return nodeToReturn
+
+    def findV(self, node):
+        for i in range(len(self.nodes)):
+            if self.nodes[i] == node:
+                return i
+        return None  # this is bad
 
 
 class NetworkRoutingSolver:
@@ -63,24 +71,37 @@ class NetworkRoutingSolver:
         #       CALL TO getShortestPath(dest_index)
 
         priorityQueue = ArrayQueue()
-        priorityQueue.listOfNodes = []
+        sourceNode = None
 
-        for vertex in range(len(self.network.nodes)-1):
+        for vertex in range(len(self.network.nodes)):
             if self.network.nodes[vertex].node_id == srcIndex:
-                node = makeNode(self.network.nodes[vertex].node_id, self.network.nodes[vertex].node_id, 0)
-                priorityQueue.insert(node)
-
+                sourceNode = makeNode(self.network.nodes[vertex].node_id, self.network.nodes[vertex].node_id, 0)
             else:
                 node = makeNode(self.network.nodes[vertex].node_id, -1, 10000)
                 priorityQueue.insert(node)
 
-        while priorityQueue.nodes:  # checks to see if it's empty
-            u = priorityQueue.deletemin()
-            for v in self.network.nodes[u.id]:
-                newDistance = priorityQueue.nodes[u].dist + v.length
-                if newDistance < priorityQueue.nodes[v].dist:
-                    priorityQueue.nodes[v].dist = newDistance
-                    priorityQueue.nodes[v].prev = u
+        priorityQueue.nodes.insert(0, sourceNode)
+
+        while priorityQueue.nodes:
+            u = priorityQueue.deleteMin()
+            print(f"Popped: {u.id}")
+            neighbors = self.network.nodes[u.id].neighbors
+            print(f"Neighbors for {u.id}: {neighbors}")
+            for v in neighbors:
+                combinedDistanceOfUandV = u.dist + v.length
+                if v.length > combinedDistanceOfUandV:
+                    # Update node that we're visiting
+                    v.length = combinedDistanceOfUandV
+                    v.prev = u
+
+                    # Find where v lives in H
+                    indexV = priorityQueue.findV(v)
+
+                    # Replace that old node with the new updated V
+                    priorityQueue.nodes[indexV] = v
+
+                    # Move V to the front of H
+                    priorityQueue.nodes.insert(0, v)
 
         t2 = time.time()
         return t2 - t1
