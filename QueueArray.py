@@ -9,23 +9,11 @@ class QueueArray(QueueInterface, ABC):
     def __init__(self):
         print("Init Queue Array")
 
-    def insert(self):
-        pass
-
-    def bubbleUp(self):
-        pass
-
     def deleteMin(self, H: list, lookupTable: list):
         H.sort(key=lambda v: v.dist)
         nodeToReturn = H[0]
         H.pop(0)
         return nodeToReturn, H
-
-    def bubbleDown(self):
-        pass
-
-    def decreaseKey(self):
-        pass
 
     def sortNeighbors(self, neighbors: list) -> list:
         neighbors.sort(key=lambda v: v.length, reverse=True)

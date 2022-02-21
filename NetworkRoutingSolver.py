@@ -3,6 +3,7 @@
 from CS312Graph import *
 import time
 
+from HeapArray import HeapArray
 from QueueArray import QueueArray
 
 
@@ -44,41 +45,43 @@ class NetworkRoutingSolver:
         self.source = srcIndex
         t1 = time.time()
 
+        arrayBase = None
+
         if use_heap:
-            print("using heap")
+            arrayBase = HeapArray()
         else:
-            qa = QueueArray()
+            arrayBase = QueueArray()
 
-            # Initialize the priority queue and get the source node
-            lookupTable = QueueArray.initList(qa, srcIndex, self.network.nodes)
-            pQueue = lookupTable.copy()
+        # Initialize the priority queue and get the source node
+        lookupTable = QueueArray.initList(arrayBase, srcIndex, self.network.nodes)
+        pQueue = lookupTable.copy()
 
-            # Loop through the priority queue
-            while pQueue:
-                # Pop the first node off of the queue and update the priority queue
-                u, pQueue = QueueArray.deleteMin(qa, pQueue, lookupTable)
+        # Loop through the priority queue
+        while pQueue:
+            # Pop the first node off of the queue and update the priority queue
+            u, pQueue = arrayBase.deleteMin(pQueue, lookupTable)
 
-                # Get the neighbors for the node we are visiting
-                neighbors = self.network.nodes[u.id].neighbors
+            # Get the neighbors for the node we are visiting
+            neighbors = self.network.nodes[u.id].neighbors
 
-                # Loop through all the neighbors and run the comparison against them
-                neighbors = QueueArray.sortNeighbors(qa, neighbors)
-                for v in neighbors:
-                    # Find where v lives in the lookup table
-                    vIndex = QueueArray.getVisitorIndex(qa, lookupTable, v.dest.node_id)
-                    # Find where v lives in the priority queue
-                    pIndex = QueueArray.getVisitorIndex(qa, pQueue, v.dest.node_id)
+            # Loop through all the neighbors and run the comparison against them
+            neighbors = arrayBase.sortNeighbors(neighbors)
+            for v in neighbors:
+                # Find where v lives in the lookup table
+                vIndex = arrayBase.getVisitorIndex(lookupTable, v.dest.node_id)
+                # Find where v lives in the priority queue
+                pIndex = arrayBase.getVisitorIndex(pQueue, v.dest.node_id)
 
-                    # If v lives inside the priority queue then visit it
-                    if vIndex is not None and pIndex is not None:
-                        uvDist = u.dist + v.length
-                        if lookupTable[vIndex].dist > uvDist:
-                            # Update the node that we're visiting
-                            lookupTable[vIndex].dist = uvDist
-                            lookupTable[vIndex].edge = v.length
-                            lookupTable[vIndex].prev = u
+                # If v lives inside the priority queue then visit it
+                if vIndex is not None and pIndex is not None:
+                    uvDist = u.dist + v.length
+                    if lookupTable[vIndex].dist > uvDist:
+                        # Update the node that we're visiting
+                        lookupTable[vIndex].dist = uvDist
+                        lookupTable[vIndex].edge = v.length
+                        lookupTable[vIndex].prev = u
 
-            self.shortestPaths = lookupTable
+        self.shortestPaths = lookupTable
 
         t2 = time.time()
         return t2 - t1

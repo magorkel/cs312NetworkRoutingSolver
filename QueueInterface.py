@@ -1,12 +1,14 @@
 from typing import Protocol
 from abc import abstractmethod
 
+
 class Node(object):
     id = -1
     prev = -1
     dist = 10000
     location = None
     edge = 0
+
 
 class QueueInterface(Protocol):
     """
@@ -21,12 +23,6 @@ class QueueInterface(Protocol):
     @abstractmethod
     def initList(self, srcIndex: int, network) -> list: raise NotImplementedError
 
-    @abstractmethod
-    def insert(self): raise NotImplementedError
-
-    @abstractmethod
-    def bubbleUp(self): raise NotImplementedError
-
     """
     Pops the top of the stack.
     
@@ -38,12 +34,6 @@ class QueueInterface(Protocol):
 
     @abstractmethod
     def deleteMin(self, H: list, lookupTable: list): raise NotImplementedError
-
-    @abstractmethod
-    def bubbleDown(self): raise NotImplementedError
-
-    @abstractmethod
-    def decreaseKey(self): raise NotImplementedError
 
     @abstractmethod
     def sortNeighbors(self, neighbors: list) -> list: raise NotImplementedError
