@@ -36,6 +36,9 @@ class QueueInterface(Protocol):
     def deleteMin(self, H: list, lookupTable: list): raise NotImplementedError
 
     @abstractmethod
+    def decreaseKey(self, nodeId, lookupTable: list): raise NotImplementedError
+
+    @abstractmethod
     def sortNeighbors(self, neighbors: list) -> list: raise NotImplementedError
 
     @abstractmethod

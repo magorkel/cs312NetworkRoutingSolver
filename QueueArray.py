@@ -15,6 +15,9 @@ class QueueArray(QueueInterface, ABC):
         H.pop(0)
         return nodeToReturn, H
 
+    def decreaseKey(self, nodeId, lookupTable: list):
+        pass
+
     def sortNeighbors(self, neighbors: list) -> list:
         neighbors.sort(key=lambda v: v.length, reverse=True)
         return neighbors

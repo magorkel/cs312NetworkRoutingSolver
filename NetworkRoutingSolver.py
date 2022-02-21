@@ -53,7 +53,7 @@ class NetworkRoutingSolver:
             arrayBase = QueueArray()
 
         # Initialize the priority queue and get the source node
-        lookupTable = QueueArray.initList(arrayBase, srcIndex, self.network.nodes)
+        lookupTable = arrayBase.initList(srcIndex, self.network.nodes)
         pQueue = lookupTable.copy()
 
         # Loop through the priority queue
@@ -63,23 +63,24 @@ class NetworkRoutingSolver:
 
             # Get the neighbors for the node we are visiting
             neighbors = self.network.nodes[u.id].neighbors
-
-            # Loop through all the neighbors and run the comparison against them
-            neighbors = arrayBase.sortNeighbors(neighbors)
+            #
+            # # Loop through all the neighbors and run the comparison against them
+            # neighbors = arrayBase.sortNeighbors(neighbors)
             for v in neighbors:
                 # Find where v lives in the lookup table
                 vIndex = arrayBase.getVisitorIndex(lookupTable, v.dest.node_id)
                 # Find where v lives in the priority queue
-                pIndex = arrayBase.getVisitorIndex(pQueue, v.dest.node_id)
+                # pIndex = arrayBase.getVisitorIndex(pQueue, v.dest.node_id)
 
                 # If v lives inside the priority queue then visit it
-                if vIndex is not None and pIndex is not None:
+                if vIndex is not None:
                     uvDist = u.dist + v.length
                     if lookupTable[vIndex].dist > uvDist:
                         # Update the node that we're visiting
                         lookupTable[vIndex].dist = uvDist
                         lookupTable[vIndex].edge = v.length
                         lookupTable[vIndex].prev = u
+                        arrayBase.decreaseKey(vIndex, lookupTable)
 
         self.shortestPaths = lookupTable
 
