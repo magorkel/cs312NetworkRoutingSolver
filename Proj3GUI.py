@@ -217,8 +217,8 @@ class Proj3GUI(QMainWindow):
         self.view.clearEdges()
         self.view.clearPoints()
         # TODO: change back to empty for both source and target nodes
-        self.sourceNode.setText('3')
-        self.targetNode.setText('1')
+        self.sourceNode.setText('6')
+        self.targetNode.setText('3')
 
     def generateClicked(self):
         if int(self.size.text()) < 4:
