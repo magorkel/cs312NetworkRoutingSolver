@@ -38,20 +38,10 @@ class QueueInterface(Protocol):
     @abstractmethod
     def decreaseKey(self, nodeId, lookupTable: list): raise NotImplementedError
 
-    @abstractmethod
-    def sortNeighbors(self, neighbors: list) -> list: raise NotImplementedError
-
-    @abstractmethod
-    def makeNode(self, id, prev, dist, location): raise NotImplementedError
-
-    """
-    Gets the index of the node with nodeID from the current state of H.
-    
-    :param H: the priority queue
-    :param nodeID: the node id we are trying to find in H
-    
-    :returns the index of the nodes location in the priority queue
-    """
-
-    @abstractmethod
-    def getVisitorIndex(self, H: list, nodeID) -> int: raise NotImplementedError
+    def makeNode(self, id, prev, dist, location):
+        node = Node()
+        node.id = id
+        node.prev = prev
+        node.dist = dist
+        node.location = location
+        return node

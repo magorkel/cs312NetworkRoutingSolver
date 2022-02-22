@@ -18,24 +18,6 @@ class QueueArray(QueueInterface, ABC):
     def decreaseKey(self, nodeId, lookupTable: list):
         pass
 
-    def sortNeighbors(self, neighbors: list) -> list:
-        neighbors.sort(key=lambda v: v.length, reverse=True)
-        return neighbors
-
-    def makeNode(self, id, prev, dist, location):
-        node = Node()
-        node.id = id
-        node.prev = prev
-        node.dist = dist
-        node.location = location
-        return node
-
-    def getVisitorIndex(self, H: list, nodeID) -> int:
-        for i in range(len(H)):
-            if H[i].id == nodeID:
-                return i
-        return None
-
     def initList(self, srcIndex: int, network) -> list:
         sourceNode = None
         H = []

@@ -217,8 +217,8 @@ class Proj3GUI(QMainWindow):
         self.view.clearEdges()
         self.view.clearPoints()
         # TODO: change back to empty for both source and target nodes
-        self.sourceNode.setText('6')
-        self.targetNode.setText('3')
+        self.sourceNode.setText('1')
+        self.targetNode.setText('20')
 
     def generateClicked(self):
         if int(self.size.text()) < 4:
@@ -415,7 +415,7 @@ class Proj3GUI(QMainWindow):
         self.speedup.setEnabled(False)
         # TODO: change back to 0
         self.randSeed = QLineEdit('1')
-        self.size = QLineEdit('7')
+        self.size = QLineEdit('20')
         self.sourceNode = QLineEdit('')
         self.targetNode = QLineEdit('')
         self.totalCost = QLineEdit('0.0')
