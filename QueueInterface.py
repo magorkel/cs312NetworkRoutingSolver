@@ -11,32 +11,27 @@ class Node(object):
 
 
 class QueueInterface(Protocol):
-    """
-    Initialize the priority queue and set the source node at the top of the priority queue.
-
-    :keyword {G}: the graph of all of the existing nodes
-    :param srcIndex: the index of the source node in {G}
-
-    :returns the initialized list.
-    """
-
     @abstractmethod
     def initList(self, srcIndex: int, network) -> list: raise NotImplementedError
-
-    """
-    Pops the top of the stack.
-    
-    :param H: the priority queue
-    :lookupTable: the table that has the updated values
-    
-    :returns {nodeToReturn, H} a tuple containing the popped node and the updated priority queue
-    """
 
     @abstractmethod
     def deleteMin(self, H: list, lookupTable: list): raise NotImplementedError
 
     @abstractmethod
     def decreaseKey(self, nodeId, lookupTable: list): raise NotImplementedError
+
+    """
+    Time: O(1) | Space: O(1)
+    
+    Create a new node and return it with the assigned values.
+    
+    :param id: the id of the node
+    :param prev: the previous node id that this node points to
+    :param dist: the distance between this node and it's previous node
+    :param location: the location of where this node lives in {G}, (x,y) point values
+    
+    :returns node: the new Node object containing the assigned properties
+    """
 
     def makeNode(self, id, prev, dist, location):
         node = Node()

@@ -41,6 +41,14 @@ class NetworkRoutingSolver:
                 currentNode = currentNode.prev
         return {'cost': total_length, 'path': path_edges}
 
+    """
+    Time: O((|v| + |e|) * log(|v|) with a heap as it iterates over all of the nodes in {G} and the edges for each edge
+    node {E}. This iterates over all of them using a priority queue, with a heap queue having a worst run time of 
+    log(|v|. If the priority queue was to only use an array our time complexity would jump up drastically to O(|v^2|).
+    
+    Space: O(|v|) since we create lists as big as {G}
+    """
+
     def computeShortestPaths(self, srcIndex, use_heap=False):
         self.source = srcIndex
         t1 = time.time()
